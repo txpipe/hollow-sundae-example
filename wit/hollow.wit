@@ -1,0 +1,47 @@
+package txpipe:hollow;
+
+world bod {
+    import kv: interface {
+      type cbor = list<u8>;
+      type kv-error = u32;
+    
+      get-value: func(key: string) -> result<cbor, kv-error>;
+      set-value: func(key: string, value: cbor) -> result<_, kv-error>;
+      list-values: func(prefix: string) -> result<list<string>, kv-error>;
+    }
+
+    import submit: interface {
+      type cbor = list<u8>;
+      type submit-error = u32;
+      
+      submit-tx: func(tx: cbor) -> result<_, submit-error>;
+    }
+    
+    import pubsub: interface {
+      type msg = list<u8>;
+      type pubsub-error = u32;
+
+      publish-msg: func(topic: string, payload: msg) -> result<_, pubsub-error>;
+    }
+    
+    type cbor = list<u8>;
+    type handle-error = u32;
+
+    enum event-kind {
+      utxo,
+      tx,
+      block,
+      timer,
+      message,
+      request,
+    }
+
+    record event {
+      id: u64,
+      kind: event-kind,
+      body: cbor,
+      config: cbor,
+    }
+
+    export handle: func(evt: event) -> result<_, handle-error>;
+}

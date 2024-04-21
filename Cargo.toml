@@ -1,0 +1,13 @@
+[package]
+name = "hollow-sundae-example"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+pallas-primitives = { version = "0.25.0" }
+pallas-codec = { version = "0.25.0" }
+serde = { version = "1.0.197", features = ["derive"] }
+wit-bindgen = "0.24.0"
